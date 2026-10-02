@@ -1,23 +1,29 @@
 # Week 01 AI Assistant Comparison
+
 ## Common question
-[Paste the exact same question used with each tool]
+`is sv event and verilog event same`
+
 ## Tool 1
-Name:
-Answer summary:
-Strengths:
-Weaknesses:
+Name: Claude
+Answer summary: SV keeps Verilog's event model and extends it (`.triggered`, `->>`, event aliasing, `null`, more scheduler regions, clocking blocks).
+Strengths: Broad, well organized, correct core point.
+Weaknesses: Region list presented as complete, "may hang" understated, unsupported mailbox/semaphore claim.
+
 ## Tool 2
-Name:
-Answer summary:
-Strengths:
-Weaknesses:
+Name: ChatGPT
+Answer summary: Same basic mechanism; SV adds `event.triggered()` to avoid missed events.
+Strengths: Concise, practical, correct core point.
+Weaknesses: Wrote `triggered()` as a method, contradicted by its own code. Narrower coverage.
+
 ## Verification source
-[Reference]
+IEEE 1800-2017 LRM, Chapters 4 and 15, plus a simulator run.
+
 ## Final comparison
-- Accuracy:
-- Traceability:
-- Explanation quality:
-- Ease of verification:
-- Which claims required correction or qualification?
+- Accuracy: Both correct on the main idea; each had minor errors.
+- Traceability: Neither gave sources unprompted.
+- Explanation quality: Claude broader, ChatGPT more concise.
+- Ease of verification: Syntax and code claims were easy to test; completeness claims needed the LRM.
+- Claims needing correction: `triggered()` syntax, the region list, "may hang".
+
 ## Lesson
-[What I learned about using AI assistants]
+Both assistants were useful for explanation but not authoritative. Check details like syntax and completeness against the standard.
