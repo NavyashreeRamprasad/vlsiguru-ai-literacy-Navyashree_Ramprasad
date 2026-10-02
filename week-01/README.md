@@ -26,12 +26,6 @@
 - [x] Verification log
 - [x] Engineering journal
 
-## Files
-- [questions.md](questions.md): answers to Q1-Q10 using Answer, Evidence, Verification, Reflection
-- [verification-log.md](verification-log.md): claims I checked this week
-- [ai-comparison.md](ai-comparison.md): Claude vs ChatGPT comparison
-- [../journal/week-01.md](../journal/week-01.md): Week 1 journal
-
 ## Reflection
 
 ### What I understood
