@@ -78,4 +78,45 @@ flowchart TD
 Sampling explains why the same prompt can give different answers on different tries. It also means a fluent answer needs checking like any other claim, which is why verification matters. One thing I'm still unsure about is how the model "reads all tokens together" in step 3. That's the attention idea, which I'll learn in a later week.
 
 
+## Q3 - Hallucination Experiment: Can AI Sound Confident and Still Be Wrong?
+### A - Answer 
+# Hallucination Experiment: Can AI Sound Confident and Still Be Wrong?
 
+## Experiment table
+
+| Field | Entry |
+|---|---|
+| **Prompt (exact wording)** | `is sv event and verilog event same` |
+| **Model A** | Claude |
+| **Model A response summary** | Says SystemVerilog keeps Verilog's event model and extends it. Lists `.triggered`, `->>`, event assignment/aliasing, `null` events, extra scheduling regions, clocking blocks, and more. |
+| **Model B** | ChatGPT |
+| **Model B response summary** | Says the basic `event`, `->`, `@` mechanism is the same and SV adds `event.triggered()` to avoid missed events. Includes an "interview answer". |
+
+### Claims checked
+
+| # | Claim | Source of claim | Evidence (IEEE 1800, verify section) | Result |
+|---|---|---|---|---|
+| 1 | `@e` can miss an event triggered earlier; `wait(e.triggered)` avoids this because the triggered state persists for the time slot | Claude and ChatGPT | §15.5.3 (`triggered` property) | **Correct** |
+| 2 | `triggered` is written as a method: `event.triggered()` | ChatGPT | `triggered` is a property accessed as `e.triggered`, with no call parentheses. ChatGPT's own code uses `done.triggered`, so it contradicts itself. | **Wrong / self-contradictory** |
+| 3 | Scheduler regions are Preponed, Active, Inactive, NBA, Observed, Reactive, Re-Inactive, Re-NBA, Postponed | Claude | §4 defines more regions (Pre-Active, Pre-NBA, Post-NBA, Pre-Observed, etc.). | **Incomplete**, presented as complete |
+| 4 | `-> e; @(e);` in the same process "may hang" | Claude | If the trigger comes first in the same process, the wait never sees it, so it will hang unless re-triggered. | **Imprecise** (understated) |
+| 5 | Mailboxes and semaphores "build on event-style synchronization" | Claude | No supporting wording found in the LRM. | **Unsupported / loosely worded** |
+| 6 | SV events can be aliased (`e1 = e2`), passed to tasks, and set to `null` | Claude | §15.5.1 and §15.5.2 | **Correct** |
+| 7 | Verilog and SV share the same `event` / `->` / `@` basics | Claude and ChatGPT | §15.5 | **Correct** |
+
+## Result
+
+Both answers were correct on the main idea (same basic mechanism, SV adds `.triggered` for race avoidance). Each had a flaw:
+
+- **ChatGPT:** syntax error (`triggered()`), contradicted by its own example.
+- **Claude:** simplified or loosely worded details (region list, mailbox/semaphore claim, "may hang").
+
+The test did not expose a major failure because the question was broad and the core answer is well documented. A narrower question (for example, exact region ordering or `->>` behavior) would be more likely to expose errors.
+
+## Lesson
+
+A correct overall answer can hide small technical errors. Both errors were stated in the same confident tone as the correct claims. In HDL work, wrong syntax or a list presented as complete can cost real debug time, so verify specific claims against the standard.
+
+## Reflection
+
+An AI answer can sound convincing because language models generate text that is statistically plausible, not text checked against a source. Clear structure, confident headings, tidy code examples, and even an "interview answer" make the output feel authoritative whether or not the facts are solid. Correct and incorrect details come in the same tone, so confidence in the wording says nothing about accuracy. Agreement between two agents is also weak evidence, since they may share the same training-data biases. Verification means checking the claims that matter (syntax, definitions, edge cases) against a primary source such as the IEEE 1800 LRM.
