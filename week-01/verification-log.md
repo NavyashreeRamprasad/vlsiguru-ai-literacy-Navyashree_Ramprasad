@@ -24,6 +24,3 @@ ChatGPT wrote `triggered()` as a method. Claude presented an incomplete region l
 **What did I learn about verification?**
 Confident tone did not predict accuracy. Syntax, completeness, and wording like "may" needed a primary source or a test. Reposts of sources are not the same as opening the original.
 
-## Could not fully verify
-- None
-
