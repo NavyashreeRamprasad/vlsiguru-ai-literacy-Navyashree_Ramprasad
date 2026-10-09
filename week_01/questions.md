@@ -68,3 +68,37 @@ The assistant said the diagram correctly shows that each term sits inside the on
 ### Summary
 
 AI is the broad goal, ML is learning from data to reach that goal, deep learning is a powerful kind of ML, and generative AI is deep learning that creates new content.
+
+## Mission 3: Is It Really AI?
+
+### Classification table
+
+| # | System | Classification | Why |
+|---|--------|----------------|-----|
+| 1 | **Calculator** | Rule-based / traditional software | It follows fixed mathematical rules. 2 + 2 is always 4, and nothing is learned from data. |
+| 2 | **Temperature warning rule** | Rule-based / traditional software | A person wrote the rule, e.g. `IF temperature > 40°C THEN show warning`. |
+| 3 | **Spam filter** | ML-based AI | Modern filters learn from many emails labelled "spam" or "not spam" and spot patterns, rather than relying only on a fixed word list. |
+| 4 | **Document summariser** | Generative AI | It writes new text that condenses the original, usually using a large language model. |
+| 5 | **Traffic ETA prediction** | ML-based AI | It learns from past and live traffic data (speeds, time of day, accidents) to predict travel time. It predicts a number and does not create new content. |
+
+### Explanation 1: An easy classification (Calculator)
+
+The calculator was easy because every step is written explicitly by a programmer, and the same input always gives the same output. There is no training data, no learning and no uncertainty. It is smart-looking at maths, but it is plain traditional software.
+
+### Explanation 2: A difficult classification (Spam filter)
+
+The spam filter was difficult because it can be built either way. An old filter might just block emails containing words like "lottery" or "free money", which is rule-based. Modern filters like Gmail's learn patterns from huge amounts of labelled email, which is ML. I classified it as ML-based because that is how most real filters work today, but the answer depends on how a specific filter is built. I could not verify this for every filter, so the label is "mainly" ML, not "always" ML.
+
+### Explanation 3: My own example (Fitness app step goal alerts vs. sleep score)
+
+| Feature | Classification | Why |
+|---------|----------------|-----|
+| **"You reached 10,000 steps!" notification** | Rule-based | A fixed rule: `IF steps >= 10000 THEN notify`. |
+| **Sleep stage detection (light, deep, REM)** | ML-based AI | It learns patterns from sensor data (heart rate, movement) labelled by sleep studies, since no simple rule can reliably separate the stages. |
+
+The same app contains both kinds of software. This shows that "is it AI?" often applies to a **feature**, not a whole product.
+
+### Conclusion
+
+If the rules are written explicitly by a person, it is **not** a model learning a pattern. Rule-based software does exactly what it was told. ML learns its own rules from data, and generative AI goes further by creating new content. The practical test is: *did a person write the rule, or did the system learn it from examples?*
+
