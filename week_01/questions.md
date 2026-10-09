@@ -1,6 +1,5 @@
 # Week 01 Questions
-## Mission 1: Find AI around you
-### A - Answer - 
+
 ## Mission 1: Find AI Around You
 
 ### Systems I use in a normal day
