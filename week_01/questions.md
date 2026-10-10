@@ -148,3 +148,57 @@ The short answer was accurate. The longer answer stated two things confidently t
 
 ## Lesson
 Confidence in the wording is not evidence of correctness. The correct and the unsupported claims sounded equally sure. Verify specific mechanism details (which function does what, what a name stands for) against source code or official docs, because those are the details an AI is most likely to fill in from plausible-sounding guesses.
+
+
+# Mission 6: Chatbot or Agent?
+
+## Definitions (simple)
+
+- **LLM:** An LLM (Large Language Model) is a type of artificial intelligence program trained on massive amounts of text data to understand, summarize, translate, and generate human-like language.
+- **AI application:** An AI application is a software program or system that uses artificial intelligence techniques—such as machine learning, natural language processing (NLP), and computer vision—to perform tasks that normally require human-like intelligence, reasoning, learning, and decision-making
+- **RAG (Retrieval-Augmented Generation):** : An AI framework that improves large language models (LLMs) by connecting them to external knowledge bases or databases. Instead of relying only on its static training data, the model retrieves relevant documents first and uses them to ground its response
+- **Tool-using assistant:** An LLM that can request a tool call (search, calculator, calendar, code runner). Software runs the tool and returns the result to the model, which then replies. Usually one request, one or a few tool calls.
+- **Agent:** An LLM-driven system given a goal that decides its own steps in a loop: plan, use tools, check results, adjust, and repeat until the goal is done or it needs help. It can take actions in the world.
+
+## Flow Diagram
+
+```mermaid
+flowchart LR
+    U[User request or goal] --> M[LLM / model]
+    M -->|needs info| R[Retrieval: docs, search, database]
+    M -->|needs action| T[Tool: API, calendar, email, code]
+    R --> RES[Result]
+    T --> RES
+    RES --> M
+    M --> O[Response or action to user]
+```
+
+The loop from **Result back to Model** is what separates a simple chatbot from a tool-using system. An agent repeats this loop many times, deciding the next step each round, until the goal is met.
+
+## Comparison Table
+
+| | LLM | AI application | RAG | Tool-using assistant | Agent |
+|---|---|---|---|---|---|
+| What it is | Base model | Product around a model | Model + document retrieval | Model + callable tools | Model + tools + a goal-driven loop |
+| Gets outside information? | No | Maybe | Yes (retrieval) | Yes (tools) | Yes |
+| Takes actions? | No | Maybe | No | Yes, when asked | Yes, on its own steps |
+| Who decides the steps? | Nobody (single reply) | Developer's fixed flow | Fixed: retrieve, then answer | Model picks a tool, human drives | Model plans and decides |
+| Number of steps | 1 | Varies | 2 (search, answer) | 1 to a few | Many, until the goal is done |
+| Example | Raw model API | Support chat website | "Ask my company policy PDF" bot | Chatbot that checks live weather | Assistant that books a whole trip |
+| Main risk | Wrong or outdated answers | Bad design | Retrieving wrong or irrelevant text | Wrong tool or wrong input | Compounding errors, unwanted actions |
+
+## Everyday Example of an Agentic Workflow
+
+**Goal: "Plan and book a dinner for me and two friends on Friday."**
+
+1. The agent checks my calendar for free time (tool).
+2. It checks the friends' availability or sends them a poll (tool).
+3. It searches for restaurants nearby that match our tastes and budget (retrieval).
+4. It checks which have a table for 3 on Friday (tool).
+5. If none are available, it changes the time or the restaurant and tries again (loop).
+6. It books the table, adds it to the calendar, and messages everyone (actions).
+7. It asks me to confirm before spending money or sending anything final (human check).
+
+A chatbot would only *suggest* restaurants. The agent pursues the goal across steps and acts.
+
+
