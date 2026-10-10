@@ -102,3 +102,49 @@ The same app contains both kinds of software. This shows that "is it AI?" often 
 
 If the rules are written explicitly by a person, it is **not** a model learning a pattern. Rule-based software does exactly what it was told. ML learns its own rules from data, and generative AI goes further by creating new content. The practical test is: *did a person write the rule, or did the system learn it from examples?*
 
+# Mission 4: Make AI Explain Itself, Then Test It
+
+## AI Prompts Used
+1. "Explain how an LLM produces an answer to my prompt."
+2. "Now explain it to me as a beginner using a simple example."
+
+## Final Explanation
+
+An LLM first splits your prompt into small pieces called **tokens** and converts each one into numbers. A neural network called a **transformer** then processes those numbers. Its **attention** mechanism lets each token weigh which other tokens matter for its meaning. The model outputs a probability for every possible next token, **samples** one (usually with some randomness), and appends it to the text. It repeats this loop one token at a time until the answer is complete. It learned these patterns by training on huge amounts of text, practicing next-token prediction.
+
+## One Correction / Clarification
+
+The AI's one-sentence summary said the model predicts "the **most likely next word**." This needed correcting in two ways:
+
+1. **It predicts tokens, not always words.** Tokens can be word fragments, punctuation, or spaces.
+2. **It doesn't always pick the most likely option.** It usually *samples* from the probability distribution, which is why the same prompt can give different answers. Only greedy selection (temperature 0) always picks the top token.
+
+Also, the percentages in the AI's "cat sat on the ___" example were invented for illustration. Real models don't display numbers like that by default.
+
+## Source Links
+- https://en.wikipedia.org/wiki/Attention_Is_All_You_Need
+- https://arpitbhayani.me/blogs/how-llms-work
+- https://blog.miguelgrinberg.com/post/how-llms-work-explained-without-math/page/2
+
+# Mission 5: Can AI Be Confidently Wrong?
+
+## Prompt
+"Why do we use m and p sequencers in UVM "
+
+## AI Answer
+> Both point to the same sequencer, the one your sequence runs on.
+>
+> - `m_sequencer` is the generic handle UVM gives you automatically. It only knows the basic sequencer type, so you can use it to `start()` other sequences, but you can't see your own custom fields.
+> - `p_sequencer` is the same handle with your own sequencer's type. You create it with `` `uvm_declare_p_sequencer(MY_SEQR) ``, and it lets you reach custom things like `p_sequencer.a_sqr`.
+>
+> Use `m_sequencer` for simple cases, and `p_sequencer` when your sequence needs something inside your sequencer, like in a virtual sequence.
+
+## Verification Source
+https://www.vlsijobseekers.com/uvm/m_seq_and_p_seq.html
+https://verificationguide.com/uvm/m_sequencer-and-p_sequencer/
+## Result
+**Mostly correct but incomplete, with two unsupported details in the earlier longer answer.**
+The short answer was accurate. The longer answer stated two things confidently that the source does not support: where the cast happens (`pre_body()`) and what the `m_`/`p_` letters stand for. Both were said in the same confident tone as the correct parts.
+
+## Lesson
+Confidence in the wording is not evidence of correctness. The correct and the unsupported claims sounded equally sure. Verify specific mechanism details (which function does what, what a name stands for) against source code or official docs, because those are the details an AI is most likely to fill in from plausible-sounding guesses.
