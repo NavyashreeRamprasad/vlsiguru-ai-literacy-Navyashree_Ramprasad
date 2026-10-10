@@ -201,4 +201,105 @@ The loop from **Result back to Model** is what separates a simple chatbot from a
 
 A chatbot would only *suggest* restaurants. The agent pursues the goal across steps and acts.
 
+# Mission 7: What Actually Runs AI?
 
+## 1. What is a CPU and what is it good at?
+
+A **CPU (Central Processing Unit)** is the general-purpose "brain" of a computer. It has a small number of powerful cores that run a wide variety of tasks quickly, one after another, including decisions, branching logic, and managing the operating system.
+
+**Good at:** running the OS, general programs, complex logic with many decisions, and coordinating other hardware. It is flexible but handles only a few things at a time.
+
+## 2. What is a GPU and why is it useful for AI?
+
+A **GPU (Graphics Processing Unit)** has hundreds to thousands of simpler cores that do the same kind of operation on lots of data at once. It was built for graphics, where millions of pixels need similar math at the same time.
+
+AI models are mostly huge amounts of **matrix multiplication** (multiplying and adding large grids of numbers). That work splits naturally into many independent pieces, so a GPU finishes it far faster than a CPU.
+
+## 3. What is an NPU / AI accelerator, and why specialised hardware?
+
+An **NPU (Neural Processing Unit)** or **AI accelerator** (for example Google's TPU) is a chip designed specifically for neural network math, mainly matrix multiplication and related operations.
+
+Because it does one job, it can do it with **more speed and less power** than a general CPU or GPU. Systems use specialised hardware because AI workloads are large and repetitive, and energy and cost matter. This is especially true on phones and laptops (battery) and in data centres (electricity bills).
+
+## 4. What does parallel computation mean?
+
+Doing **many calculations at the same time** instead of one after another.
+
+> Example: adding 1,000 pairs of numbers. A CPU works through them a few at a time. A GPU assigns thousands of cores to add many pairs simultaneously.
+
+It only helps when the calculations are independent of each other, which is true for most of the math inside neural networks.
+
+## 5. Why does AI depend so heavily on compute and memory?
+
+- **Compute:** a model performs billions or trillions of multiply-add operations to process a single input.
+- **Memory:** a model has millions to billions of **parameters** (weights) that must be stored and fetched during computation. Input data and intermediate results also take space.
+- Often the chip waits for data to arrive from memory instead of computing, so **memory capacity and memory speed** limit performance as much as raw compute does.
+
+## 6. Training vs. inference (hardware view)
+
+| | Training | Inference |
+|---|---|---|
+| What happens | The model learns by adjusting its weights over huge amounts of data | A trained model produces an output for a new input |
+| Computation | Forward pass, plus working out how to adjust weights, repeated many times | Mainly the forward pass only |
+| Compute needed | Very large | Smaller per request, but happens many times |
+| Memory needed | Very high (weights plus extra data used for learning) | Lower, mostly weights and the current input |
+| Typical hardware | Clusters of many GPUs/TPUs in data centres | GPUs, NPUs, or CPUs, in the cloud or on a device |
+| Priority | Total throughput over days or weeks | Low latency (fast reply) and low power/cost |
+
+## 7. Diagram
+
+```mermaid
+flowchart TD
+    A[AI Application<br/>e.g. chatbot, photo app] --> B[AI Model<br/>e.g. LLM, image model]
+    B --> C[Software / Framework<br/>e.g. PyTorch, TensorFlow]
+    C --> D[Compute Hardware<br/>CPU / GPU / NPU-Accelerator]
+    D <--> E[Memory<br/>stores weights and data]
+```
+
+Text version:
+
+```
+AI Application  ->  AI Model  ->  Software/Framework  ->  CPU / GPU / Accelerator  <->  Memory
+```
+
+The arrow between hardware and memory goes both ways because the chip constantly reads weights and data and writes results back.
+
+## 8. Real AI workload example
+
+**Workload: running a chatbot (LLM inference) for many users.**
+
+**Best hardware: GPUs or dedicated AI accelerators** in a data centre.
+- Generating each token requires large matrix multiplications, which run well in parallel.
+- Large model weights need lots of fast memory, which AI GPUs/accelerators provide.
+- A CPU still helps by handling the web server, request routing, and other general tasks.
+
+
+# Mission 8: Where Could AI Help in My VLSI Track?
+
+**Track chosen:** Design Verification (DV)
+
+| Item | Answer |
+|---|---|
+| **Task** | Debugging failing simulation regressions (reading logs and waveforms to find why UVM tests fail) |
+| **Why it fits AI** | It involves repetition, search, and data analysis: engineers read through thousands of log lines, group similar failures, and look for patterns across many test runs. |
+| **How AI might help** | AI can summarise long simulation logs, cluster failures that share the same error message, and suggest likely causes (for example, a scoreboard mismatch or a missing objection), so I can reach the root cause faster. |
+| **Why human/domain knowledge still matters** | AI can guess wrongly with confidence, so I still need to understand the design spec, UVM behaviour, and waveforms to decide whether the failure is a real RTL bug, a testbench bug, or a bad test, and to verify any fix. |
+
+# Mission 9: My AI Working Agreement
+
+## My 5 Rules
+
+1. **Verify before I trust.**
+   I will check important facts, code, and technical claims against a reliable source (official docs, specs, library source code, or a simulation) before using them. Confident wording is not evidence of correctness.
+
+2. **Never share confidential or proprietary information.**
+   I will not paste company code, RTL, testbenches, design specs, tool scripts, or anything under NDA into a public AI tool. If I need help, I will remove or generalise sensitive details first, or use only approved tools.
+
+3. **Use AI to learn, not to skip learning.**
+   I will try the problem myself first, then use AI to explain, review, or suggest alternatives. I should be able to explain any answer I submit in my own words without the AI.
+
+4. **Ask for reasoning and sources, and test the answer.**
+   I will ask AI to explain why, and I will run or test what it gives me (compile the code, simulate the sequence, check the waveform). If it can't be tested, I'll treat it as an unverified guess.
+
+5. **I own my final work.**
+   If I submit it, I am responsible for it, including any mistakes AI introduced. I will note where AI helped and never blame the tool for an error I failed to check.
